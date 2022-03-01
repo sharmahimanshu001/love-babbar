@@ -1,65 +1,45 @@
+#include<iostream>
 #include<vector>
 using namespace std;
 
-int max(vector<int> arr,int n)
-{
-    int temp=arr[0];
-    for(int i=0;i<n;++i)
-    {
-        if(arr[i]>temp)
-        temp=arr[i];
+bool isPossible(vector<int> &stalls, int k, int mid, int n) {
+    
+    int cowCount = 1;
+    int lastPos = stalls[0];
+    
+    for(int i=0; i<n; i++ ){
+        
+        if(stalls[i]-lastPos >= mid){
+            cowCount++;
+            if(cowCount==k)
+            {
+                return true;
+            }
+            lastPos = stalls[i];
+        }
     }
-    return temp;
-
+    return false;
 }
 
-bool ispossible(vector <int>arr,int n,int k,int mid)
+int aggressiveCows(vector<int> &stalls, int k)
 {
-    int cowcount=1;
-    int cowsum=0;
-    for(int i=0;i<n;++i)
-   {
-       if(arr[i]-cowsum<=mid)
-       {
-           cowsum=cowsum+arr[i];
-       }
-       else
-       {
-           cowcount++;
-           if(cowcount>k||arr[i]>mid)
-           return false;
-       }
-       cowsum=arr[i];
-    }
-   return true;
-
-}  
-
-int allocate(vector <int>arr,int n,int k)
-{
-    int start=0,sum=0;
-    int end =max(arr,n);
-    int mid=start+(end-start)/2;
-    int ans=-1;
+    sort(stalls.begin(), stalls.end());
+   	int s = 0;
+    int n = stalls.size();
+    int e=stalls[n-1];
+    int ans = -1;
+    int mid = s + (e-s)/2;
     
-    while(start<=end)
-    {
-        if(ispossible)
-        {
-            ans=mid;
-            end=mid-1;
+    while(s<=e) {
+        if(isPossible(stalls, k, mid, n)) {
+            ans = mid;
+            s = mid + 1;
         }
         else
         {
-            start=mid+1;
+            e = mid - 1;
         }
-        return ans;
+        mid = s + (e-s)/2;
     }
-
-}
-
-int main()
-{
-    int ary[5]={4,6,1,2,3};
-    
+    return ans;
 }
